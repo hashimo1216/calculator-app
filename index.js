@@ -53,8 +53,7 @@ function deleteText() {
   if (currentDisplay.innerText.length > 0) {
     calculateResult();
   } else {
-    currentDisplay.innerText = ''
-    resultDisplay.innerText = ''
+    clearDisplay();
   }
 }
 
