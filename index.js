@@ -50,7 +50,7 @@ function deleteText() {
     decimalClicked = false
   } 
   currentDisplay.innerText = currentDisplay.innerText.slice(0, -1);
-  if (currentDisplay.innerText !== '') {
+  if (currentDisplay.innerText.length > 0) {
     calculateResult();
   }
 }
