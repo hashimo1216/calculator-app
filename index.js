@@ -157,9 +157,10 @@ function handleParentheses() {
     currentDisplay.innerText += '('
   } else if (openParenthesesCount !== closeParenthesesCount && openParentheses && !operatorTexts.includes(lastChar)) {
     currentDisplay.innerText += ')'
-    if (openParenthesesCount === closeParenthesesCount) {
+  }
+  
+  if (openParenthesesCount === closeParenthesesCount) {
       openParentheses = false
-    }
   }
   operatorClicked = true;
 }
