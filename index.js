@@ -52,6 +52,8 @@ function deleteText() {
   currentDisplay.innerText = currentDisplay.innerText.slice(0, -1);
   if (currentDisplay.innerText.length > 0) {
     calculateResult();
+  } else {
+    resultDisplay.innerText = ''
   }
 }
 
@@ -155,7 +157,9 @@ function handleParentheses() {
     currentDisplay.innerText += '('
   } else if (openParenthesesCount !== closeParenthesesCount && openParentheses && !operatorTexts.includes(lastChar)) {
     currentDisplay.innerText += ')'
-    openParentheses = false
+    if (openParenthesesCount === closeParenthesesCount) {
+      openParentheses = false
+    }
   }
   operatorClicked = true;
 }
