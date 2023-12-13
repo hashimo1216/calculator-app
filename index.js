@@ -153,13 +153,11 @@ function handleParentheses() {
   const openParenthesesCount = (currentDisplay.innerText.match(/\(/g) || []).length
   const closeParenthesesCount = (currentDisplay.innerText.match(/\)/g) || []).length
 
-  if(!openParentheses) {
+  if(!openParentheses || (openParenthesesCount === closeParenthesesCount)) {
     currentDisplay.innerText += '('
   } else if (openParenthesesCount !== closeParenthesesCount && openParentheses && !operatorTexts.includes(lastChar)) {
     currentDisplay.innerText += ')'
-  } else if (openParenthesesCount === closeParenthesesCount) {
-      openParentheses = false
-  }
+  } 
   operatorClicked = true;
 }
 
