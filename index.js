@@ -156,10 +156,11 @@ function handleParentheses() {
   if(!openParentheses) {
     currentDisplay.innerText += '('
   } else if (openParentheses && !operatorTexts.includes(lastChar)) {
-    if (openParenthesesCount !== closeParenthesesCount) {
+    if (openParenthesesCount !== closeParenthesesCount && !operatorTexts.includes(lastChar)) {
       currentDisplay.innerText += ')'
     } else if (openParenthesesCount === closeParenthesesCount) {
       currentDisplay.innerText += '('
+      openParentheses = false
     }
   } 
   operatorClicked = true;
