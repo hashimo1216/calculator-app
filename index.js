@@ -156,7 +156,7 @@ function handleParentheses() {
   if(!openParentheses) {
     currentDisplay.innerText += '('
   } else if (openParentheses && !operatorTexts.includes(lastChar)) {
-    if (openParenthesesCount !== closeParenthesesCount && !operatorTexts.includes(lastChar)) {
+    if (openParenthesesCount !== closeParenthesesCount && !openParentheses !== lastChar) {
       currentDisplay.innerText += ')'
     } else if (openParenthesesCount === closeParenthesesCount) {
       currentDisplay.innerText += '('
