@@ -153,7 +153,7 @@ function handleParentheses() {
   const openParenthesesCount = (currentDisplay.innerText.match(/\(/g) || []).length
   const closeParenthesesCount = (currentDisplay.innerText.match(/\)/g) || []).length
 
-  if(!openParentheses || (openParenthesesCount === closeParenthesesCount)) {
+  if(!openParentheses || openParenthesesCount === closeParenthesesCount) {
     currentDisplay.innerText += '('
   } else if (openParenthesesCount !== closeParenthesesCount && openParentheses && !operatorTexts.includes(lastChar)) {
     currentDisplay.innerText += ')'
