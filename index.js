@@ -6,10 +6,31 @@ const operators = Array.from(document.querySelectorAll('.operator'));
 const operatorTexts = operators.map((operator) => operator.innerText)
 
 let decimalClicked = false
-let openParentheses = false
+let openParentheses = true
 let operatorClicked = false
+let memory = "";
 
+function memoryClear() {
+  memory = ""
+}
 
+function memoryRecall() {
+  if(memory === "") {
+    currentDisplay.innerText = "0"
+  } else {
+    currentDisplay.innerText = memory
+  }
+}
+
+function addToMemory() {
+  const previousMemory = memory
+  memory = eval(previousMemory + '+' + currentDisplay.innerText)
+}
+
+function subtractFromMemory() {
+  const previousMemory = memory
+  memory = eval(previousMemory + '-' + currentDisplay.innerText)
+}
 
 function calculateResult() {
   const openParenthesesCount = (currentDisplay.innerText.match(/\(/g) || []).length
@@ -37,10 +58,10 @@ function calculateResult() {
 
 // Function to clear the display
 function clearDisplay() {
-  currentDisplay.innerText = '';
+  currentDisplay.innerText = '0';
   resultDisplay.innerText = '';
   decimalClicked = false
-  openParentheses = false
+  openParentheses = true
   operatorClicked = false
 }
 
@@ -67,9 +88,9 @@ function equalHandle() {
 numbers.forEach((number) => {
   number.addEventListener('click', (e) => {
     const lastChar = currentDisplay.innerText.slice(-1)
-    if (lastChar === '(') {
-      openParentheses = true;
-    }
+    const secondToLastChar = currentDisplay.innerText.slice(-2, -1)
+
+    openParentheses = false;
     handleNumber(parseInt(e.target.textContent));
     calculateResult() 
   })
@@ -80,39 +101,39 @@ function handleNumber(number) {
   const secondToLastChar = currentDisplay.innerText.slice(-2,-1)
 
   if (lastChar === '-' && secondToLastChar === '(') {
-    openParentheses = true
+    openParentheses = false
   }
-  
-  if (number === 0) {
-    if (currentDisplay.innerText === '') {
-      currentDisplay.innerText = number;
-    } else if (lastChar === '-') {
-      if (secondToLastChar === '') {
-        currentDisplay.innerText = number
-      } else if (operatorTexts.includes(secondToLastChar)) {
-        currentDisplay.innerText = currentDisplay.innerText.slice(0, -1) + number
-      } else {
+
+  if (lastChar !== '%') {
+    if (number === 0) {
+      if (currentDisplay.innerText === '0') {
+        currentDisplay.innerText = number;
+      } else if (lastChar === '-') {
+        if (secondToLastChar === '') {
+          currentDisplay.innerText = number
+        } else if (operatorTexts.includes(secondToLastChar)) {
+          currentDisplay.innerText = currentDisplay.innerText.slice(0, -1) + number
+        } else {
+          currentDisplay.innerText += number
+        }
+      } else if (lastChar === '0' && secondToLastChar !== '' && !operatorTexts.includes(secondToLastChar)) {
+        currentDisplay.innerText += number 
+       } else if (lastChar !== '0') {
         currentDisplay.innerText += number
       }
-    } else if (lastChar === '0' && secondToLastChar !== '' && !operatorTexts.includes(secondToLastChar)) {
-      currentDisplay.innerText += number 
-     } else if (lastChar !== '0') {
-      currentDisplay.innerText += number
-    }
-  } else if (number !== 0) {
-    if (currentDisplay.innerText === '') {
-      currentDisplay.innerText += number
-    } else if (lastChar === '0' && secondToLastChar === '') {
-      currentDisplay.innerText = number
-    } else if (lastChar === '0' && (secondToLastChar !== '' || !operatorTexts.includes(secondToLastChar))){
-      currentDisplay.innerText += number
-    } else if (lastChar !== '0') {
-      currentDisplay.innerText += number
+    } else if (number !== 0) {
+      if (currentDisplay.innerText === '') {
+        currentDisplay.innerText += number
+      } else if (lastChar === '0' && secondToLastChar === '') {
+        currentDisplay.innerText = number
+      } else if (lastChar === '0' && (secondToLastChar !== '' || !operatorTexts.includes(secondToLastChar))){
+        currentDisplay.innerText += number
+      } else if (lastChar !== '0') {
+        currentDisplay.innerText += number
+      }
     }
   }
 }
-
-
 
 operators.forEach((operator) => {
   operator.addEventListener('click', (e) => {
@@ -125,10 +146,10 @@ function handleOperator(operator) {
   const secondToLastChar = currentDisplay.innerText.slice(-2, -1)
 
   operatorClicked = true
-
-  if (operator === '-' && lastChar !== '-' && lastChar !== '+') {
-    currentDisplay.innerText += operator
-  } else if (currentDisplay.innerText !== '' && lastChar !== '(') {
+  
+  if (operator === '-' && lastChar !== '-' && lastChar !== '+' && currentDisplay.innerText === '0') {
+    currentDisplay.innerText = operator
+  } else if (currentDisplay.innerText !== '0' && lastChar !== '(') {
     decimalClicked = false
     if (!operatorTexts.includes(lastChar)) {
       currentDisplay.innerText += operator
@@ -136,13 +157,17 @@ function handleOperator(operator) {
       currentDisplay.innerText = currentDisplay.innerText.slice(0, -1) + operator
     } else if (operatorTexts.includes(lastChar) && operatorTexts.includes(secondToLastChar)) {
       currentDisplay.innerText = currentDisplay.innerText.slice(0, -2) + operator
-    } 
+    }
+  } else if (lastChar === '(' && operator === '-') {
+    currentDisplay.innerText += operator
   }
+
+  openParentheses = true
 }
 
 function handlePercent() {
   const lastChar = currentDisplay.innerText.slice(-1)
-  if (numberTexts.includes(lastChar)) {
+  if (numberTexts.includes(lastChar) && currentDisplay.innerText !== '0') {
     currentDisplay.innerText += '%'
   }
    calculateResult();
@@ -153,18 +178,23 @@ function handleParentheses() {
   const openParenthesesCount = (currentDisplay.innerText.match(/\(/g) || []).length
   const closeParenthesesCount = (currentDisplay.innerText.match(/\)/g) || []).length
 
-  if(!openParentheses) {
-    currentDisplay.innerText += '('
-  } else if (openParentheses && !operatorTexts.includes(lastChar)) {
-    if (openParenthesesCount !== closeParenthesesCount && openParentheses !== lastChar) {
+  if (openParentheses) {
+    if (currentDisplay.innerText === '0') {
+      currentDisplay.innerText = '('
+    } else if (currentDisplay.innerText !== '0' || lastChar.includes(operatorTexts) || lastChar !== '0') {
+      currentDisplay.innerText += '('
+    }
+  } else if (!openParentheses && !operatorTexts.includes(lastChar) && currentDisplay.innerText !== '0') {
+    if (openParenthesesCount !== closeParenthesesCount && !lastChar.includes('(')) {
       currentDisplay.innerText += ')'
     } else if (openParenthesesCount === closeParenthesesCount) {
       currentDisplay.innerText += '('
-      openParentheses = false
+      openParentheses = true
     }
   } 
   operatorClicked = true;
 }
+
 
 function decimalPoint(e) {
   const lastChar = currentDisplay.innerText.slice(-1)
@@ -179,6 +209,21 @@ function decimalPoint(e) {
   }
 }
 
+function sizeChanged() {
+  console.log('ok')
+  if (currentDisplay.innerText.length > 8) {
+    currentDisplay.style.fontSize = '35px'
+  } else {
+    currentDisplay.style.fontSize = '';
+  }
+}
+
+//document.getElementById("current-display").addEventListener('change', console.log(currentDisplay.innerText.length));
+
+document.getElementById("mc").addEventListener("click", memoryClear)
+document.getElementById("mr").addEventListener("click", memoryRecall)
+document.getElementById("m+").addEventListener("click", addToMemory)
+document.getElementById("m-").addEventListener("click", subtractFromMemory)
 document.getElementById("ac").addEventListener('click', clearDisplay)
 document.getElementById('parentheses').addEventListener('click', handleParentheses)
 document.getElementById('percent').addEventListener('click',handlePercent)
