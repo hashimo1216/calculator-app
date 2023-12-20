@@ -8,4 +8,4 @@
 
 
 # View
-[Calculator]( https://hashimo1216.github.io/caluculatator-app/)
+[Calculator]( https://hashimo1216.github.io/calculator-app/)
