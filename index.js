@@ -251,6 +251,6 @@ document.addEventListener('keydown', function(event) {
       } else if (key === ')') {
         currentDisplay.innerText += ')';
       } 
-      calcluate();
+      handleCalculate();
     });
 
