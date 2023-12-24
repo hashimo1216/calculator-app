@@ -8,15 +8,16 @@ const operatorTexts = operators.map((operator) => operator.innerText)
 let decimalClicked = false
 let openParentheses = true
 let operatorClicked = false
-let memory = "";
+let memory = '';
+let calculationResult = '0';
 
 function memoryClear() {
-  memory = ""
+  memory = ''
 }
 
 function memoryRecall() {
   if(memory === "") {
-    currentDisplay.innerText = "0"
+    currentDisplay.innerText = '0'
   } else {
     currentDisplay.innerText = memory
   }
@@ -24,12 +25,12 @@ function memoryRecall() {
 
 function addToMemory() {
   const previousMemory = memory
-  memory = eval(previousMemory + '+' + currentDisplay.innerText)
+  memory = eval(previousMemory + '+' + calculationResult)
 }
 
 function subtractFromMemory() {
   const previousMemory = memory
-  memory = eval(previousMemory + '-' + currentDisplay.innerText)
+  memory = eval(previousMemory + '-' + calculationResult)
 }
 
 function handleCalculate() {
@@ -58,7 +59,8 @@ function handleCalculate() {
 
 // Function to clear the display
 function clearDisplay() {
-  currentDisplay.innerText = '0';
+  calculationResult = '0';
+  currentDisplay.innerText = calculationResult;
   resultDisplay.innerText = '';
   decimalClicked = false
   openParentheses = true
@@ -80,7 +82,8 @@ function deleteText() {
 
 function handleEqual() {
   handleCalculate();
-  currentDisplay.innerText = resultDisplay.innerText;
+  calculationResult = resultDisplay.innerText;
+  currentDisplay.innerText = calculationResult;
   resultDisplay.innerText = '';
 }
 
