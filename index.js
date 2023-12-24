@@ -95,7 +95,7 @@ numbers.forEach((number) => {
 
     openParentheses = false;
     handleNumber(parseInt(e.target.textContent));
-    handleCalclute() 
+    handleCalculate() 
   })
 })
 
