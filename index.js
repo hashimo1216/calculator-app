@@ -32,7 +32,7 @@ function subtractFromMemory() {
   memory = eval(previousMemory + '-' + currentDisplay.innerText)
 }
 
-function calculateResult() {
+function handleCalculate() {
   const openParenthesesCount = (currentDisplay.innerText.match(/\(/g) || []).length
   const closeParenthesesCount = (currentDisplay.innerText.match(/\)/g) || []).length
 
@@ -72,14 +72,14 @@ function deleteText() {
   } 
   currentDisplay.innerText = currentDisplay.innerText.slice(0, -1);
   if (currentDisplay.innerText.length > 0) {
-    calculateResult();
+    handleCalculate();
   } else {
     clearDisplay();
   }
 }
 
-function equalHandle() {
-  calculateResult();
+function handleEqual() {
+  handleCalculate();
   currentDisplay.innerText = resultDisplay.innerText;
   resultDisplay.innerText = '';
 }
@@ -92,7 +92,7 @@ numbers.forEach((number) => {
 
     openParentheses = false;
     handleNumber(parseInt(e.target.textContent));
-    calculateResult() 
+    handleCalclute() 
   })
 })
 
@@ -170,7 +170,7 @@ function handlePercent() {
   if (numberTexts.includes(lastChar) && currentDisplay.innerText !== '0') {
     currentDisplay.innerText += '%'
   }
-   calculateResult();
+   handleCalcluate();
 }
 
 function handleParentheses() {
@@ -210,7 +210,6 @@ function decimalPoint(e) {
 }
 
 function sizeChanged() {
-  console.log('ok')
   if (currentDisplay.innerText.length > 8) {
     currentDisplay.style.fontSize = '35px'
   } else {
@@ -226,7 +225,7 @@ document.getElementById("ac").addEventListener('click', clearDisplay)
 document.getElementById('parentheses').addEventListener('click', handleParentheses)
 document.getElementById('percent').addEventListener('click',handlePercent)
 document.getElementById("delete").addEventListener('click', deleteText)
-document.getElementById("equal").addEventListener('click', equalHandle)
+document.getElementById("equal").addEventListener('click', handleEqual)
 document.getElementById('decimal-point').addEventListener('click', decimalPoint)
 
 document.addEventListener('keydown', function(event) {
@@ -239,7 +238,7 @@ document.addEventListener('keydown', function(event) {
       } else if (operatorTexts.includes(key)) {
         handleOperator(key);
       } else if (key === 'Enter') {
-        equalHandle();
+        handleEqual();
       } else if (key === 'Backspace') {
         deleteText();
       } else if (key === 'c') {
