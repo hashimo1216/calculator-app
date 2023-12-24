@@ -244,8 +244,10 @@ document.addEventListener('keydown', function(event) {
         deleteText();
       } else if (key === 'c') {
         clearDisplay();
-      } else if (key === '(' || key === ')') {
-        handleParentheses();
+      } else if (key === '(') {
+        currentDisplay.innerText += '(';
+      } else if (key === ')') {
+        currentDisplay.innerText += ')';
       }
     });
 
