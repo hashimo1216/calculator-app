@@ -218,8 +218,6 @@ function sizeChanged() {
   }
 }
 
-//document.getElementById("current-display").addEventListener('change', console.log(currentDisplay.innerText.length));
-
 document.getElementById("mc").addEventListener("click", memoryClear)
 document.getElementById("mr").addEventListener("click", memoryRecall)
 document.getElementById("m+").addEventListener("click", addToMemory)
@@ -230,3 +228,24 @@ document.getElementById('percent').addEventListener('click',handlePercent)
 document.getElementById("delete").addEventListener('click', deleteText)
 document.getElementById("equal").addEventListener('click', equalHandle)
 document.getElementById('decimal-point').addEventListener('click', decimalPoint)
+
+document.addEventListener('keydown', function(event) {
+      const key = event.key;
+
+      if (key >= '0' && key <= '9') {
+        handleNumber(parseInt(key));
+      } else if (key === '.') {
+        decimalPoint();
+      } else if (operatorTexts.includes(key)) {
+        handleOperator(key);
+      } else if (key === 'Enter') {
+        equalHandle();
+      } else if (key === 'Backspace') {
+        deleteText();
+      } else if (key === 'c') {
+        clearDisplay();
+      } else if (key === '(' || key === ')') {
+        handleParentheses();
+      }
+    });
+
