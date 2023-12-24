@@ -233,13 +233,12 @@ document.getElementById('decimal-point').addEventListener('click', decimalPoint)
 
 document.addEventListener('keydown', function(event) {
       const key = event.key;
-      console.log(key)
+
       if (key >= '0' && key <= '9') {
         handleNumber(parseInt(key));
       } else if (key === '.') {
         decimalPoint();
       } else if (operatorTexts.includes(key)) {
-        console.log(key)
         handleOperator(key);
       } else if (key === 'Enter') {
         handleEqual();
@@ -252,5 +251,6 @@ document.addEventListener('keydown', function(event) {
       } else if (key === ')') {
         currentDisplay.innerText += ')';
       } 
+      calcluate();
     });
 
