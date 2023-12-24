@@ -239,6 +239,7 @@ document.addEventListener('keydown', function(event) {
       } else if (key === '.') {
         decimalPoint();
       } else if (operatorTexts.includes(key)) {
+        console.log(key)
         handleOperator(key);
       } else if (key === 'Enter') {
         handleEqual();
@@ -250,6 +251,6 @@ document.addEventListener('keydown', function(event) {
         currentDisplay.innerText += '(';
       } else if (key === ')') {
         currentDisplay.innerText += ')';
-      }
+      } 
     });
 
